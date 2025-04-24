@@ -25,33 +25,33 @@ export interface ImageDetailsInterface{
     update_at: Date;
 }
 
-function DisplayImages() {
+function DisplayImages(props:any) {
     const { data, isLoading } = useQuery({
         queryKey: ['users'],
         queryFn: fetchImages,
     })  
     return (
-        <TopBarLayout>
-            <div className='flex flex-wrap gap-10 mx-2'>
-                {isLoading?(
-                    <CardSkeleton count={8}/>
-                ):data?.length===0?(
-                    <div>Not found</div>
-                ):data.map((image:ImageDetailsInterface)=>(
-                    <ImageCard
-                        id={image.id}
-                        isLoading={isLoading}
-                        image={image.image}
-                        author={image.author} 
-                        title={image.title} 
-                        transformation_url={image.transformation_url} 
-                        is_minted_NFT={image.is_minted_NFT} 
-                        create_at={image.create_at} 
-                        update_at={image.update_at}                
-                    />
-                ))}
-            </div>
-        </TopBarLayout>
+        <div className='flex flex-wrap gap-10 mx-2'>
+            {isLoading?(
+                <CardSkeleton count={8}/>
+            ):data?.length===0?(
+                <div>Not found</div>
+            ):data.map((image:ImageDetailsInterface)=>(
+                <ImageCard
+                    id={image.id}
+                    isLoading={isLoading}
+                    image={image.image}
+                    author={image.author} 
+                    title={image.title} 
+                    transformation_url={image.transformation_url} 
+                    is_minted_NFT={image.is_minted_NFT} 
+                    create_at={image.create_at} 
+                    update_at={image.update_at}        
+                    nft={props.nft}
+                    marketplace={props.marketplace}        
+                />
+            ))}
+        </div>
     )
 }
 

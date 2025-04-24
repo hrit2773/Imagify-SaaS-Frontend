@@ -2,37 +2,47 @@ import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
-import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import { red } from '@mui/material/colors';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { ImageDetailsInterface } from './DisplayImages';
 import { Box, Menu, MenuItem, Tooltip } from '@mui/material';
-import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import * as React from 'react';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import CreateForm from './CreateForm';
+import { formatDate } from '../lib/utils';
 
-export default function ImageCard(props:ImageDetailsInterface) {
-  const formatDate=(date:Date)=>{
-    const currDate = new Date(date);
-    const options:Intl.DateTimeFormatOptions = {
-      year: "numeric",
-      month: "long",
-      day: "numeric"
-    };
-    const formattedDate = currDate.toLocaleDateString("en-US", options);
-    return formattedDate
-  }
+export default function ImageCard(props:any) {
+  
   const navigate=useNavigate()
   const options=['View Details'];
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
   };
   const handleCloseUserMenu = () => {
-    navigate(`/image-detail/${props.id}`)
     setAnchorElUser(null);
   };
+  const handleOptionSelect=(option:string)=>{
+    if (option){
+      navigate(`/image-detail/${props.id}`)
+    }
+    setAnchorElUser(null);
+  }
   return (
     <Card sx={{ maxWidth: 345 }}>
       <CardHeader
@@ -60,7 +70,7 @@ export default function ImageCard(props:ImageDetailsInterface) {
               onClose={handleCloseUserMenu}
             >
               {options.map((option) => (
-                <MenuItem key={option} onClick={handleCloseUserMenu}>
+                <MenuItem key={option} onClick={()=>handleOptionSelect(option)}>
                   <Typography sx={{ textAlign: 'center' }}>{option}</Typography>
                 </MenuItem>
               ))}
@@ -76,11 +86,30 @@ export default function ImageCard(props:ImageDetailsInterface) {
         alt="Paella dish"
       />
       <CardContent>
-        <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-          This impressive paella is a perfect party dish and a fun meal to cook
-          together with your guests. Add 1 cup of frozen peas along with the mussels,
-          if you like.
-        </Typography>
+        <React.Fragment>
+        <Button variant="outlined" onClick={handleClickOpen}>
+          Mint as NFT
+        </Button>
+        <Dialog
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">
+            {"Are you sure?"}
+          </DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              Minting action cannot be undone as it is permanent.
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose}>Cancel</Button>
+            <CreateForm setOpen={setOpen} imageUrl={props.image} nft={props.nft} marketplace={props.marketplace}/>
+          </DialogActions>
+        </Dialog>
+      </React.Fragment>
       </CardContent>
     </Card>
   );
