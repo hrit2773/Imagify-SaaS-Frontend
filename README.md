@@ -20,6 +20,7 @@ The frontend for **Imagify**, an AI-powered image transformation platform with W
 - **Blockchain**: Ethers.js + Hardhat (Contract Deployment)
 - **Contracts**: Solidity (ERC-721 for NFTs)
 - **Payments**: decentralized
+- **IPFS**: Pinata IPFS
 
 ## 📦 Installation
 
