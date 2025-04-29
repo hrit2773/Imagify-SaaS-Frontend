@@ -26,7 +26,7 @@ The frontend for **Imagify**, an AI-powered image transformation platform with W
 ```bash
 # Clone the repository
 git clone https://github.com/yourusername/imagify.git
-cd imagify/Imagify-SaaS-Frontend
+cd Imagify-SaaS-Frontend
 
 # Install dependencies
 npm install
